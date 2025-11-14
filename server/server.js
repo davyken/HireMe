@@ -7,7 +7,6 @@ import connect from "./db/connect.js";
 import asyncHandler from "express-async-handler";
 import fs from "fs";
 import User from "./models/UserModel.js";
-import { Domain } from "domain";
 
 dotenv.config();
 
@@ -22,7 +21,7 @@ const config = {
   authRequired: false,
   auth0Logout: true,
   secret: process.env.SECRET,
-  baseURL: process.env.BASE_URL,
+  baseURL: process.env.BASE_URL, // e.g., http://localhost:5000 or https://yourapp.onrender.com
   clientID: process.env.CLIENT_ID,
   issuerBaseURL: process.env.ISSUER_BASE_URL,
   routes: {
@@ -34,9 +33,9 @@ const config = {
   session: {
     absoluteDuration: 30 * 24 * 60 * 60 * 1000, // 30 days
     cookie: {
-      domain:  "hireme-yu0h.onrender.com",
-      secure: true, 
-      sameSite: "None", 
+      domain: isProduction ? "hireme-yu0h.onrender.com" : undefined,
+      secure: isProduction, // secure cookies only in production
+      sameSite: isProduction ? "None" : "Lax", // Lax for dev, None for prod cross-site
     },
   },
 };
