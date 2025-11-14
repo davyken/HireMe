@@ -7,6 +7,7 @@ import connect from "./db/connect.js";
 import asyncHandler from "express-async-handler";
 import fs from "fs";
 import User from "./models/UserModel.js";
+import { Domain } from "domain";
 
 dotenv.config();
 
@@ -33,9 +34,9 @@ const config = {
   session: {
     absoluteDuration: 30 * 24 * 60 * 60 * 1000, // 30 days
     cookie: {
-      secure: isProduction, // Only secure in production
-      sameSite: isProduction ? "None" : "Lax", // Cross-site support in prod
-      // No domain set for localhost
+      domain:  "hireme-yu0h.onrender.com",
+      secure: true, 
+      sameSite: "None", 
     },
   },
 };
