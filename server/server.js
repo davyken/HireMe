@@ -7,21 +7,16 @@ import connect from "./db/connect.js";
 import asyncHandler from "express-async-handler";
 import fs from "fs";
 import User from "./models/UserModel.js";
-
+import { log } from "console";
 dotenv.config();
 
 const app = express();
 
-// Determine environment
-const isProduction = process.env.NODE_ENV?.trim() === "production";
-console.log("Running in", process.env.NODE_ENV);
-
-// Auth0 configuration
 const config = {
   authRequired: false,
   auth0Logout: true,
   secret: process.env.SECRET,
-  baseURL: process.env.BASE_URL, // e.g., http://localhost:5000 or https://yourapp.onrender.com
+  baseURL: process.env.BASE_URL,
   clientID: process.env.CLIENT_ID,
   issuerBaseURL: process.env.ISSUER_BASE_URL,
   routes: {
@@ -30,17 +25,17 @@ const config = {
     logout: "/logout",
     login: "/login",
   },
+
   session: {
     absoluteDuration: 30 * 24 * 60 * 60 * 1000, // 30 days
     cookie: {
-      domain: isProduction ? "hireme-yu0h.onrender.com" : undefined,
-      secure: isProduction, // secure cookies only in production
-      sameSite: isProduction ? "None" : "Lax", // Lax for dev, None for prod cross-site
+      domain: "hireme-yu0h.onrender.com",
+      secure: true,
+      sameSite: "None",
     },
   },
 };
 
-// Middleware setup
 app.use(
   cors({
     origin: process.env.CLIENT_URL,
@@ -54,14 +49,16 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
 app.use(auth(config));
 
-// Ensure user exists in DB
+// function to check if user exists in the db
 const ensureUserInDB = asyncHandler(async (user) => {
   try {
     const existingUser = await User.findOne({ auth0Id: user.sub });
 
     if (!existingUser) {
+      // create a new user document
       const newUser = new User({
         auth0Id: user.sub,
         email: user.email,
@@ -71,6 +68,7 @@ const ensureUserInDB = asyncHandler(async (user) => {
       });
 
       await newUser.save();
+
       console.log("User added to db", user);
     } else {
       console.log("User already exists in db", existingUser);
@@ -80,20 +78,23 @@ const ensureUserInDB = asyncHandler(async (user) => {
   }
 });
 
-// Root route
 app.get("/", async (req, res) => {
   if (req.oidc.isAuthenticated()) {
+    // check if Auth0 user exists in the db
     await ensureUserInDB(req.oidc.user);
+
+    // redirect to the frontend
     return res.redirect(process.env.CLIENT_URL);
   } else {
     return res.send("Logged out");
   }
 });
 
-// Dynamic route loading
+// routes
 const routeFiles = fs.readdirSync("./routes");
 
 routeFiles.forEach((file) => {
+  // import dynamic routes
   import(`./routes/${file}`)
     .then((route) => {
       app.use("/api/v1/", route.default);
@@ -103,10 +104,10 @@ routeFiles.forEach((file) => {
     });
 });
 
-// Start server
 const server = async () => {
   try {
     await connect();
+
     app.listen(process.env.PORT, () => {
       console.log(`Server is running on port ${process.env.PORT}`);
     });
