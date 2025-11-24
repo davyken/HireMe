@@ -155,7 +155,7 @@ function Filters() {
             className="w-full"
           />
           <span className="text-sm text-gray-500">
-            {formatMoney(minSalary, "GBP")}
+            {formatMoney(minSalary)}
           </span>
         </div>
       </div>
@@ -171,7 +171,7 @@ function Filters() {
           className="w-full"
         />
         <span className="text-sm text-gray-500">
-          {formatMoney(maxSalary, "GBP")}
+            {formatMoney(maxSalary)}
         </span>
       </div>
     </div>

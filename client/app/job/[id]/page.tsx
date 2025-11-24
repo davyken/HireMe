@@ -118,21 +118,11 @@ function page() {
 
                 <span>
                   <span className="font-bold">
-                    {formatMoney(salary, "GBP")}
+{formatMoney(salary)}
                   </span>
                   <span className="font-medium text-gray-500 text-lg">
                     /
-                    {salaryType
-                      ? `${
-                          salaryType === "Yearly"
-                            ? "pa"
-                            : salaryType === "Monthly"
-                            ? "pcm"
-                            : salaryType === "Weekly"
-                            ? "pw"
-                            : "ph"
-                        }`
-                      : ""}
+{"frs cfa"}
                   </span>
                 </span>
               </p>
