@@ -46,7 +46,7 @@ function JobCard({ job, activeJob }: JobProps) {
   }, [job.likes, userProfile._id]);
 
   const companyDescription =
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut purus eget nunc.";
+    "This Company is a leading firm in the industry, known for its innovative solutions and commitment to excellence. We pride ourselves on fostering a collaborative work environment that encourages growth and development among our employees.";
 
   const jobTypeBg = (type: string) => {
     switch (type) {
@@ -133,16 +133,9 @@ function JobCard({ job, activeJob }: JobProps) {
 
       <div className="flex justify-between items-center gap-6">
         <p>
-          <span className="font-bold">{formatMoney(salary, "GBP")}</span>
+<span className="font-bold">{formatMoney(salary)}</span>
           <span className="font-medium text-gray-400 text-lg">
-            /
-            {salaryType === "Yearly"
-              ? "pa"
-              : salaryType === "Monthly"
-              ? "pcm"
-              : salaryType === "Weekly"
-              ? "pw"
-              : "ph"}
+            / frs cfa
           </span>
         </p>
 
