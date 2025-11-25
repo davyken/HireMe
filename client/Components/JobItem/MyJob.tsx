@@ -40,89 +40,88 @@ function MyJob({ job }: JobProps) {
     }
   }, [job.likes, userProfile._id]);
 
-  return (
-    <div className="p-8 bg-white rounded-xl flex flex-col gap-5">
-      <div className="flex justify-between">
-        <div
-          className="flex items-center space-x-4 mb-2 cursor-pointer"
-          onClick={() => router.push(`/job/${job._id}`)}
-        >
-          <Image
-            alt={`logo`}
-            src={job.createdBy.profilePicture || "/user.png"}
-            width={48}
-            height={48}
-            className="rounded-full shadow-sm"
-          />
+    return (
+      <div className="p-6 sm:p-8 bg-white rounded-xl flex flex-col gap-5">
+        <div className="flex justify-between items-start flex-wrap gap-2">
+          <div
+            className="flex items-center space-x-4 mb-2 cursor-pointer flex-1 min-w-0"
+            onClick={() => router.push(`/job/${job._id}`)}
+          >
+            <Image
+              alt={`logo`}
+              src={job.createdBy.profilePicture || "/user.png"}
+              width={48}
+              height={48}
+              className="rounded-full shadow-sm flex-shrink-0"
+            />
 
-          <div>
-            <CardTitle className="text-xl font-bold truncate">
-              {job.title}
-            </CardTitle>
-            <p className="text-sm text-muted-foreground">
-              {job.createdBy.name}
-            </p>
-          </div>
-        </div>
-        <button
-          className={`text-2xl ${
-            isLiked ? "text-[#7263f3]" : "text-gray-400"
-          } `}
-          onClick={() => {
-            isAuthenticated
-              ? handleLike(job._id)
-              : router.push("https://hireme-yu0h.onrender.com/login");
-          }}
-        >
-          {isLiked ? bookmark : bookmarkEmpty}
-        </button>
-      </div>
-      <div>
-        <p className="text-sm text-muted-foreground mb-2">{job.location}</p>
-        <p className="text-sm text-muted-foreground mb-4">
-          Posted {formatDates(job.createdAt)}
-        </p>
-
-        <div className="flex justify-between">
-          <div>
-            <div className="flex flex-wrap gap-2 mb-4">
-              {job.skills.map((skill, index) => (
-                <Badge key={index} variant="secondary">
-                  {skill}
-                </Badge>
-              ))}
-            </div>
-            <div className="flex flex-wrap gap-2 mb-4">
-              {job.tags.map((skill, index) => (
-                <Badge key={index} variant="outline">
-                  {skill}
-                </Badge>
-              ))}
+            <div className="truncate">
+              <CardTitle className="text-lg sm:text-xl font-bold truncate">
+                {job.title}
+              </CardTitle>
+              <p className="text-xs sm:text-sm text-muted-foreground truncate">
+                {job.createdBy.name}
+              </p>
             </div>
           </div>
-          {job.createdBy._id === userProfile?._id && (
-            <div className="self-end">
-              <Button variant="ghost" size="icon" className="text-gray-500">
-                <Pencil size={14} />
-                <span className="sr-only">Edit job</span>
-              </Button>
+          <button
+            className={`text-2xl ${
+              isLiked ? "text-[#7263f3]" : "text-gray-400"
+            } `}
+            onClick={() => {
+              isAuthenticated
+                ? handleLike(job._id)
+                : router.push("https://hireme-yu0h.onrender.com/login");
+            }}
+          >
+            {isLiked ? bookmark : bookmarkEmpty}
+          </button>
+        </div>
+        <div>
+          <p className="text-xs sm:text-sm text-muted-foreground mb-2 truncate">{job.location}</p>
+          <p className="text-xs sm:text-sm text-muted-foreground mb-4">
+            Posted {formatDates(job.createdAt)}
+          </p>
 
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-gray-500
-                hover:text-red-500"
-                onClick={() => deleteJob(job._id)}
-              >
-                <Trash size={14} />
-                <span className="sr-only">Delete job</span>
-              </Button>
+          <div className="flex justify-between flex-wrap">
+            <div>
+              <div className="flex flex-wrap gap-2 mb-4">
+                {job.skills.map((skill, index) => (
+                  <Badge key={index} variant="secondary">
+                    {skill}
+                  </Badge>
+                ))}
+              </div>
+              <div className="flex flex-wrap gap-2 mb-4">
+                {job.tags.map((skill, index) => (
+                  <Badge key={index} variant="outline">
+                    {skill}
+                  </Badge>
+                ))}
+              </div>
             </div>
-          )}
+            {job.createdBy._id === userProfile?._id && (
+              <div className="self-end flex space-x-2">
+                <Button variant="ghost" size="icon" className="text-gray-500">
+                  <Pencil size={14} />
+                  <span className="sr-only">Edit job</span>
+                </Button>
+
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-gray-500 hover:text-red-500"
+                  onClick={() => deleteJob(job._id)}
+                >
+                  <Trash size={14} />
+                  <span className="sr-only">Delete job</span>
+                </Button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
 }
 
 export default MyJob;

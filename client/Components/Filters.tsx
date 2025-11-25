@@ -50,7 +50,7 @@ function Filters() {
   };
 
   return (
-    <div className="w-[22rem] pr-4 space-y-6">
+    <div className="w-full sm:w-[22rem] pr-0 sm:pr-4 space-y-6">
       <div>
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold mb-4">Job Type</h2>

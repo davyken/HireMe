@@ -91,21 +91,21 @@ export default function Home() {
       {/* Hero Section */}
       <section className="py-20 bg-gradient-to-b from-[#d7dedc] to-[#7263f3]/5 text-primary-foreground">
         <div className="container mx-auto px-4 text-center text-black">
-          <h1 className="text-4xl text-[#7263f3] md:text-5xl font-bold mb-6">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 text-[#7263f3]">
             Find Your Dream Job or Perfect Candidate
           </h1>
-          <p className="text-xl mb-8">
+          <p className="text-lg sm:text-xl mb-8">
             Connect with thousands of employers and job seekers on our platform
           </p>
-          <div className="max-w-2xl mx-auto flex gap-4">
+          <div className="max-w-full sm:max-w-2xl mx-auto flex flex-col sm:flex-row gap-4 px-2">
             <Input
               type="text"
               placeholder="Job title or keyword"
               className="flex-grow bg-white text-black"
             />
-            <Button className="bg-[#7263f3] text-white">
+            <Button className="bg-[#7263f3] text-white w-full sm:w-auto">
               <SearchIcon className="w-6 h-6" />
-              Search Jobs
+              <span className="ml-2">Search Jobs</span>
             </Button>
           </div>
         </div>
@@ -114,12 +114,12 @@ export default function Home() {
       {/* Features Section */}
       <section className="py-20 bg-[#f0f5fa]">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-12">
             Why Choose{" "}
             <span className="text-[#7263f3] font-extrabold">HireME</span>
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-2">
             {features.map((feature, index) => (
               <Card
                 key={index}
@@ -167,7 +167,7 @@ export default function Home() {
       {/* Jobs Section */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-12">
             Latest <span className="text-[#7263f3]">Job Openings</span>
           </h2>
 
@@ -176,7 +176,7 @@ export default function Home() {
           ) : jobs.length === 0 ? (
             <p className="text-center text-gray-500">No jobs available right now.</p>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-2">
               {jobs.map((job) => (
                 <Card key={job._id} className="flex flex-col h-full rounded-xl shadow-md">
                   <CardHeader>
@@ -204,8 +204,8 @@ export default function Home() {
       {/* CTA Section */}
       <section className="py-[7rem] bg-[#d7dedc]">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-8">Ready to Get Started?</h2>
-          <div className="flex flex-col md:flex-row justify-center gap-4">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-8">Ready to Get Started?</h2>
+          <div className="flex flex-col sm:flex-row justify-center gap-4 px-2">
             <Button size={"lg"} asChild>
               <Link href={"/findwork"}>Find Work</Link>
             </Button>
