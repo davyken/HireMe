@@ -1,4 +1,6 @@
 "use client";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import Footer from "@/Components/Footer";
 import Header from "@/Components/Header";
 import { Badge } from "@/Components/ui/badge";
@@ -12,7 +14,6 @@ import {
   CardTitle,
 } from "@/Components/ui/card";
 import { Input } from "@/Components/ui/input";
-import { useGlobalContext } from "@/context/globalContext";
 import {
   Briefcase,
   Building,
@@ -21,9 +22,26 @@ import {
   Users,
 } from "lucide-react";
 import Link from "next/link";
-import { title } from "process";
+import type { Job } from "@/types/types";
 
 export default function Home() {
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const res = await axios.get("https://hireme-yu0h.onrender.com/jobs");
+        setJobs(res.data); 
+      } catch (err) {
+        console.error("Error fetching jobs:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchJobs();
+  }, []);
+
   const features = [
     {
       icon: <Briefcase className="w-6 h-6 text-[#7263f3]" />,
@@ -70,40 +88,42 @@ export default function Home() {
     <main>
       <Header />
 
+      {/* Hero Section */}
       <section className="py-20 bg-gradient-to-b from-[#d7dedc] to-[#7263f3]/5 text-primary-foreground">
         <div className="container mx-auto px-4 text-center text-black">
-          <h1 className="text-4xl text-[#7263f3] md:text-5xl font-bold mb-6">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 text-[#7263f3]">
             Find Your Dream Job or Perfect Candidate
           </h1>
-          <p className="text-xl mb-8">
+          <p className="text-lg sm:text-xl mb-8">
             Connect with thousands of employers and job seekers on our platform
           </p>
-          <div className="max-w-2xl mx-auto flex gap-4">
+          <div className="max-w-full sm:max-w-2xl mx-auto flex flex-col sm:flex-row gap-4 px-2">
             <Input
               type="text"
               placeholder="Job title or keyword"
               className="flex-grow bg-white text-black"
             />
-            <Button className="bg-[#7263f3] text-white">
+            <Button className="bg-[#7263f3] text-white w-full sm:w-auto">
               <SearchIcon className="w-6 h-6" />
-              Search Jobs
+              <span className="ml-2">Search Jobs</span>
             </Button>
           </div>
         </div>
       </section>
 
+      {/* Features Section */}
       <section className="py-20 bg-[#f0f5fa]">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-12">
             Why Choose{" "}
             <span className="text-[#7263f3] font-extrabold">HireME</span>
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-2">
             {features.map((feature, index) => (
               <Card
                 key={index}
-                className="flex flex-col h-full rounded-xl border-none"
+                className="flex flex-col h-full rounded-xl border-none shadow-md"
               >
                 <CardHeader>
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
@@ -119,7 +139,6 @@ export default function Home() {
                     {feature.benefits.map((benefit, index) => (
                       <li key={index} className="flex items-center">
                         <CheckCircleIcon className="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-
                         <span>{benefit}</span>
                       </li>
                     ))}
@@ -145,11 +164,48 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Jobs Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-12">
+            Latest <span className="text-[#7263f3]">Job Openings</span>
+          </h2>
+
+          {loading ? (
+            <p className="text-center text-gray-500">Loading jobs...</p>
+          ) : jobs.length === 0 ? (
+            <p className="text-center text-gray-500">No jobs available right now.</p>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-2">
+              {jobs.map((job) => (
+                <Card key={job._id} className="flex flex-col h-full rounded-xl shadow-md">
+                  <CardHeader>
+                    <CardTitle className="text-xl mb-2">{job.title}</CardTitle>
+                    <CardDescription>{job.createdBy.name}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex-grow">
+                    <p className="text-gray-600 mb-4">{job.location}</p>
+                    <p className="text-sm text-gray-500 line-clamp-3">
+                      {job.description}
+                    </p>
+                  </CardContent>
+                  <CardFooter>
+                    <Button asChild className="w-full bg-[#7263f3] text-white">
+                      <Link href={`/job/${job._id}`}>View Details</Link>
+                    </Button>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* CTA Section */}
       <section className="py-[7rem] bg-[#d7dedc]">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-8">Ready to Get Started?</h2>
-
-          <div className="flex flex-col md:flex-row justify-center gap-4">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-8">Ready to Get Started?</h2>
+          <div className="flex flex-col sm:flex-row justify-center gap-4 px-2">
             <Button size={"lg"} asChild>
               <Link href={"/findwork"}>Find Work</Link>
             </Button>
