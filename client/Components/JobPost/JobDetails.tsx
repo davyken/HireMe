@@ -63,7 +63,7 @@ function JobDetails() {
 
       <Separator className="my-2" />
 
-      <div className="relative grid grid-cols-2 gap-6">
+      <div className="relative grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
         <div>
           <h3 className="text-black font-bold">Salary</h3>
           <Label htmlFor="salary" className="text-gray-500 mt-2">
