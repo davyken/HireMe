@@ -16,6 +16,7 @@ interface Job {
     profilePicture: string;
     name: string;
   };
+  companyDescription?: string;
   createdAt: string;
   updatedAt: string;
 }

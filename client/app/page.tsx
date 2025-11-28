@@ -24,6 +24,9 @@ import {
 import Link from "next/link";
 import type { Job } from "@/types/types";
 
+axios.defaults.baseURL = "https://hireme-yu0h.onrender.com";
+axios.defaults.withCredentials = true;
+
 export default function Home() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
@@ -31,8 +34,8 @@ export default function Home() {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const res = await axios.get("https://hireme-yu0h.onrender.com/jobs");
-        setJobs(res.data); 
+        const res = await axios.get("/api/v1/jobs");
+        setJobs(res.data);
       } catch (err) {
         console.error("Error fetching jobs:", err);
       } finally {

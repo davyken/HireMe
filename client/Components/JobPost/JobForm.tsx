@@ -117,7 +117,7 @@ function JobForm() {
 
       <form
         action=""
-        className="p-6 flex-1 bg-white rounded-lg self-start"
+        className="p-4 sm:p-6 flex-1 bg-white rounded-lg self-start"
         onSubmit={handleSubmit}
       >
         {renderStages()}
