@@ -102,7 +102,7 @@ function MyJob({ job }: JobProps) {
             </div>
             {job.createdBy._id === userProfile?._id && (
               <div className="self-end flex space-x-2">
-                <Button variant="ghost" size="icon" className="text-gray-500">
+                <Button variant="ghost" size="icon" className="text-gray-500" onClick={() => router.push(`/job/${job._id}?edit=true`)}>
                   <Pencil size={14} />
                   <span className="sr-only">Edit job</span>
                 </Button>

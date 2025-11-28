@@ -85,8 +85,8 @@ function JobForm() {
   };
 
   return (
-    <div className="w-full flex gap-6">
-      <div className="self-start w-[10rem] flex flex-col bg-white rounded-md shadow-sm overflow-hidden">
+    <div className="w-full flex flex-col sm:flex-row gap-4 sm:gap-6">
+      <div className="self-start w-full sm:w-[10rem] flex flex-col bg-white rounded-md shadow-sm overflow-hidden">
         {sections.map((section, index) => (
           <button
             key={index}
