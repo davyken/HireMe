@@ -22,6 +22,7 @@ const JobEditForm: React.FC<JobEditFormProps> = ({ job, onCancel, onUpdate }) =>
     skills: job.skills.join(", ") || "",
     salaryType: job.salaryType || "",
     negotiable: job.negotiable || false,
+    companyDescription: job.companyDescription || "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -51,6 +52,7 @@ const JobEditForm: React.FC<JobEditFormProps> = ({ job, onCancel, onUpdate }) =>
       skills: formData.skills.split(",").map((skill) => skill.trim()),
       salaryType: formData.salaryType,
       negotiable: formData.negotiable,
+      companyDescription: formData.companyDescription,
     };
 
     try {
@@ -100,6 +102,17 @@ const JobEditForm: React.FC<JobEditFormProps> = ({ job, onCancel, onUpdate }) =>
           value={formData.description}
           onChange={handleChange}
           required
+          rows={5}
+          className="w-full p-2 border rounded"
+        />
+      </label>
+
+      <label className="block mb-2">
+        Company Description
+        <textarea
+          name="companyDescription"
+          value={formData.companyDescription}
+          onChange={handleChange}
           rows={5}
           className="w-full p-2 border rounded"
         />

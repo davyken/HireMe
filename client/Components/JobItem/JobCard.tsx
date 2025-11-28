@@ -45,8 +45,7 @@ function JobCard({ job, activeJob }: JobProps) {
     setIsLiked(job.likes.includes(userProfile._id));
   }, [job.likes, userProfile._id]);
 
-  const companyDescription =
-    "This Company is a leading firm in the industry, known for its innovative solutions and commitment to excellence. We pride ourselves on fostering a collaborative work environment that encourages growth and development among our employees.";
+  const companyDescription = job.companyDescription || "";
 
   const jobTypeBg = (type: string) => {
     switch (type) {

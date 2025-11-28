@@ -33,6 +33,12 @@ const JobSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    // Added companyDescription field below
+    companyDescription: {
+      type: String,
+      default: "",
+    },
+
     tags: [
       {
         type: String,
