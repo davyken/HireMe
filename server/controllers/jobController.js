@@ -21,6 +21,7 @@ export const createJob = asyncHandler(async (req, res) => {
       skills,
       salaryType,
       negotiable,
+      companyDescription,
     } = req.body;
 
     if (!title) {
@@ -61,6 +62,7 @@ export const createJob = asyncHandler(async (req, res) => {
       skills,
       salaryType,
       negotiable,
+      companyDescription,
       createdBy: user._id,
     });
 
@@ -232,6 +234,54 @@ export const getJobById = asyncHandler(async (req, res) => {
     return res.status(500).json({
       message: "Server Error",
     });
+  }
+});
+
+export const updateJob = asyncHandler(async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findOne({ auth0Id: req.oidc.user.sub });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const job = await Job.findById(id);
+
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    // Check if the current user is the creator of the job
+    if (!job.createdBy.equals(user._id)) {
+      return res.status(403).json({ message: "Not authorized to update this job" });
+    }
+
+    // Update fields if provided in request body
+    const updateFields = [
+      "title",
+      "description",
+      "location",
+      "salary",
+      "jobType",
+      "tags",
+      "skills",
+      "salaryType",
+      "negotiable",
+      "companyDescription",
+    ];
+
+    updateFields.forEach((field) => {
+      if (req.body[field] !== undefined) {
+        job[field] = req.body[field];
+      }
+    });
+
+    await job.save();
+    return res.status(200).json(job);
+  } catch (error) {
+    console.log("Error in updateJob: ", error);
+    return res.status(500).json({ message: "Server Error" });
   }
 });
 
