@@ -66,7 +66,7 @@ function page() {
     negotiable,
   } = jobState;
 
-  const { name, profilePicture } = createdBy;
+  const { name, profilePicture } = createdBy || {};
 
   const handleLike = (id: string) => {
     setIsLiked((prev) => !prev);
@@ -127,7 +127,7 @@ function page() {
                     onClick={() => {
                       isAuthenticated
                         ? handleLike(jobState._id)
-                        : router.push("https://hireme-yu0h.onrender.com/login");
+                        : router.push("http://localhost:8000/login");
                     }}
                   >
                     {isLiked ? bookmark : bookmarkEmpty}
@@ -175,7 +175,7 @@ function page() {
                 dangerouslySetInnerHTML={{ __html: description }}
               ></div>
 
-              {createdBy._id === userProfile?._id && (
+              {createdBy?._id === userProfile?._id && (
                 <button
                   onClick={handleEditClick}
                   className="mt-6 px-4 py-2 bg-blue-600 rounded text-white hover:bg-blue-700"
@@ -207,7 +207,7 @@ function page() {
                   toast.error("You have already applied to this job");
                 }
               } else {
-                router.push("https://hireme-yu0h.onrender.com/login");
+                router.push("http://localhost:8000/login");
               }
             }}
           >

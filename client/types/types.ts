@@ -11,7 +11,7 @@ interface Job {
   likes: string[];
   skills: string[];
   applicants: string[];
-  createdBy: {
+  createdBy?: {
     _id: string;
     profilePicture: string;
     name: string;
@@ -19,5 +19,6 @@ interface Job {
   companyDescription?: string;
   createdAt: string;
   updatedAt: string;
+  source?: string;
 }
 export type { Job };

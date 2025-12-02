@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 
 const GlobalContext = createContext();
 
-axios.defaults.baseURL = "https://hireme-yu0h.onrender.com";
+axios.defaults.baseURL = "http://localhost:8000";
 axios.defaults.withCredentials = true;
 
 export const GlobalContextProvider = ({ children }) => {
@@ -22,6 +22,7 @@ export const GlobalContextProvider = ({ children }) => {
   // input state
   const [jobTitle, setJobTitle] = useState("");
   const [jobDescription, setJobDescription] = useState("");
+  const [companyDescription, setCompanyDescription] = useState("");
   const [salary, setSalary] = useState(0);
   const [activeEmploymentTypes, setActiveEmploymentTypes] = useState([]);
   const [salaryType, setSalaryType] = useState("Year");
@@ -71,6 +72,10 @@ export const GlobalContextProvider = ({ children }) => {
     setJobDescription(e.target.value.trimStart());
   };
 
+  const handleCompanyDescriptionChange = (e) => {
+    setCompanyDescription(e.target.value.trimStart());
+  };
+
   const handleSalaryChange = (e) => {
     setSalary(e.target.value);
   };
@@ -78,6 +83,7 @@ export const GlobalContextProvider = ({ children }) => {
   const resetJobForm = () => {
     setJobTitle("");
     setJobDescription("");
+    setCompanyDescription("");
     setSalary(0);
     setActiveEmploymentTypes([]);
     setSalaryType("Year");
@@ -107,6 +113,7 @@ export const GlobalContextProvider = ({ children }) => {
         loading,
         jobTitle,
         jobDescription,
+        companyDescription,
         salary,
         activeEmploymentTypes,
         salaryType,
@@ -116,6 +123,7 @@ export const GlobalContextProvider = ({ children }) => {
         location,
         handleTitleChange,
         handleDescriptionChange,
+        handleCompanyDescriptionChange,
         handleSalaryChange,
         setActiveEmploymentTypes,
         setJobDescription,

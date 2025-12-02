@@ -23,16 +23,16 @@ function JobCard({ job, activeJob }: JobProps) {
 
   const {
     title,
-
     salaryType,
     salary,
     createdBy,
     applicants,
     jobType,
     createdAt,
+    source,
   } = job;
 
-  const { name, profilePicture } = createdBy;
+  const { name, profilePicture } = createdBy || {};
 
   const router = useRouter();
 
@@ -87,9 +87,16 @@ function JobCard({ job, activeJob }: JobProps) {
           </div>
 
           <div className="flex flex-col gap-1">
-            <h4 className="group-hover:underline font-bold">{title}</h4>
+            <div className="flex items-center gap-2">
+              <h4 className="group-hover:underline font-bold">{title}</h4>
+              {source !== 'user' && (
+                <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded">
+                  External
+                </span>
+              )}
+            </div>
             <p className="text-xs">
-              {name}: {applicants.length}{" "}
+              {name || 'External Source'}: {applicants.length}{" "}
               {applicants.length > 1 ? "Applicants" : "Applicant"}
             </p>
           </div>
@@ -102,7 +109,7 @@ function JobCard({ job, activeJob }: JobProps) {
           onClick={() => {
             isAuthenticated
               ? handleLike(job._id)
-              : router.push("https://hireme-yu0h.onrender.com/login");
+              : router.push("http://localhost:8000/login");
           }}
         >
           {isLiked ? bookmark : bookmarkEmpty}

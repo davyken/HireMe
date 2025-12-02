@@ -38,6 +38,20 @@ function MyEditor() {
   );
 }
 
+function CompanyEditor() {
+  const { handleCompanyDescriptionChange, companyDescription } = useGlobalContext();
+
+  return (
+    <textarea
+      value={companyDescription}
+      onChange={handleCompanyDescriptionChange}
+      placeholder="Describe the company..."
+      rows={4}
+      className="w-full p-2 border rounded resize-none"
+    />
+  );
+}
+
 function JobDetails() {
   const {
     handleSalaryChange,
@@ -58,6 +72,20 @@ function JobDetails() {
         </div>
         <div className="flex-1">
           <MyEditor />
+        </div>
+      </div>
+
+      <Separator className="my-2" />
+
+      <div className="grid grid-cols-2 gap-6">
+        <div className="flex-1">
+          <h3 className="text-black font-bold">Company Description</h3>
+          <Label htmlFor="companyDescription" className="text-gray-500 mt-2">
+            Provide a description of the company.
+          </Label>
+        </div>
+        <div className="flex-1">
+          <CompanyEditor />
         </div>
       </div>
 

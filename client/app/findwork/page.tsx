@@ -47,7 +47,7 @@ function page() {
     <main>
       <Header />
 
-      <div className="relative px-4 sm:px-8 md:px-16 bg-[#D7DEDC] overflow-hidden">
+      <div className="relative px-4 sm:px-8 md:px-16 bg-[#D7DEDC] overflow-hidden mt-20">
         <h1 className="py-8 text-black font-bold text-2xl sm:text-3xl">
           Find Your Next Job Here
         </h1>
