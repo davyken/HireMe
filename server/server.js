@@ -40,9 +40,8 @@ const config = {
     absoluteDuration: 30 * 24 * 60 * 60 * 1000, // 30 days
     cookie: {
       domain: "hire-me-mu-pied.vercel.app",
-      secure: isProduction, // Only secure in production
-      sameSite: isProduction ? "None" : "Lax", // Cross-site support in prod
-      // No domain set for localhost
+      secure: true,
+      sameSite: "None",
     },
   },
 };
