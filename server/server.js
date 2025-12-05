@@ -40,9 +40,10 @@ const config = {
   session: {
     absoluteDuration: 30 * 24 * 60 * 60 * 1000, // 30 days
     cookie: {
-      secure: isProduction, 
-      sameSite: isProduction ? "None" : "Lax", 
+      secure: isProduction,
+      sameSite: isProduction ? "None" : "Lax",
     },
+    store: new MongoStore({ mongoUrl: process.env.MONGO_URI }),
   },
 };
 
