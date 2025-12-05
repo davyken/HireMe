@@ -62,6 +62,13 @@ app.use(cookieParser());
 // Define fetch-external route before auth middleware
 app.get('/api/v1/jobs/fetch-external', fetchExternalJobs);
 
+console.log('Auth config:', {
+  baseURL: config.baseURL,
+  clientID: config.clientID ? 'SET' : 'NOT SET',
+  issuerBaseURL: config.issuerBaseURL,
+  routes: config.routes
+});
+
 app.use(auth(config));
 
 // Error handling middleware for auth
@@ -100,13 +107,21 @@ const ensureUserInDB = asyncHandler(async (user) => {
 });
 
 app.get("/", async (req, res) => {
+  console.log('Root route hit');
+  console.log('CLIENT_URL:', process.env.CLIENT_URL);
+  console.log('Is authenticated:', req.oidc.isAuthenticated());
+
   if (req.oidc.isAuthenticated()) {
+    console.log('User authenticated:', req.oidc.user.sub);
     // check if Auth0 user exists in the db
     await ensureUserInDB(req.oidc.user);
 
     // redirect to the frontend
-    return res.redirect(process.env.CLIENT_URL);
+    const redirectUrl = process.env.CLIENT_URL || 'http://localhost:3000';
+    console.log('Redirecting to:', redirectUrl);
+    return res.redirect(redirectUrl);
   } else {
+    console.log('User not authenticated');
     return res.send("Logged out");
   }
 });
