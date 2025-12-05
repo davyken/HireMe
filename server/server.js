@@ -12,6 +12,8 @@ import cron from "node-cron";
 import axios from "axios";
 import Job from "./models/JobModel.js";
 import { fetchExternalJobs } from "./controllers/jobController.js";
+import session from "express-session";
+import MongoStore from "connect-mongo";
 dotenv.config();
 
 const app = express();
@@ -32,8 +34,11 @@ const config = {
 
   session: {
     absoluteDuration: 30 * 24 * 60 * 60 * 1000, // 30 days
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI,
+      ttl: 30 * 24 * 60 * 60, // 30 days
+    }),
     cookie: {
-      domain: "hireme-yu0h.onrender.com",
       secure: true,
       sameSite: "Lax",
     },
