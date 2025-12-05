@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 const JobsContext = createContext();
 
-axios.defaults.baseURL = "http://localhost:8000";
+axios.defaults.baseURL = "https://hireme-yu0h.onrender.com";
 axios.defaults.withCredentials = true;
 
 export const JobsContextProvider = ({ children }) => {

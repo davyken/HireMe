@@ -73,14 +73,14 @@ function Header() {
         ) : (
           <div className="flex items-center gap-4">
             <Link
-              href={"http://localhost:8000/login"}
+              href={"https://hireme-yu0h.onrender.com/login"}
               className="py-2 px-4 rounded-md border flex items-center gap-2 bg-[#7263F3] text-white border-[#7263F3] hover:bg-[#7263F3]/90 transition-all duration-200 ease-in-out"
             >
               <LogIn className="w-4 h-4" />
               Login
             </Link>
             <Link
-              href={"http://localhost:8000/login"}
+              href={"https://hireme-yu0h.onrender.com/login"}
               className="py-2 px-4 rounded-md border flex items-center gap-2 border-[#7263F3] text-[#7263F3] hover:bg-[#7263F3]/10 transition-all duration-200 ease-in-out"
             >
               <UserPlus className="w-4 h-4" />
@@ -126,7 +126,7 @@ function Header() {
             ) : (
               <>
                 <Link
-                  href={"http://localhost:8000/login"}
+                  href={"https://hireme-yu0h.onrender.com/login"}
                   className="py-2 px-4 rounded-md border flex items-center gap-2 bg-[#7263F3] text-white border-[#7263F3] hover:bg-[#7263F3]/90 transition-all duration-200 ease-in-out"
                   onClick={() => setMobileOpen(false)}
                 >
@@ -134,7 +134,7 @@ function Header() {
                   Login
                 </Link>
                 <Link
-                  href={"http://localhost:8000/login"}
+                  href={"https://hireme-yu0h.onrender.com/login"}
                   className="py-2 px-4 rounded-md border flex items-center gap-2 border-[#7263F3] text-[#7263F3] hover:bg-[#7263F3]/10 transition-all duration-200 ease-in-out"
                   onClick={() => setMobileOpen(false)}
                 >

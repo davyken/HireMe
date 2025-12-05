@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: 'http://localhost:8000/api/v1/:path*',
+        destination: 'https://hireme-yu0h.onrender.com/api/v1/:path*',
       },
     ];
   },
