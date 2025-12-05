@@ -33,8 +33,8 @@ const config = {
   session: {
     absoluteDuration: 30 * 24 * 60 * 60 * 1000, // 30 days
     cookie: {
-      // domain: "http://localhost:3000",
-      secure: false,
+      domain: "hireme-yu0h.onrender.com",
+      secure: true,
       sameSite: "Lax",
     },
   },
