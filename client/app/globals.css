@@ -67,6 +67,7 @@
 
 body {
   background: #f0f5fa;
+  padding-top: 5rem;
 }
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
