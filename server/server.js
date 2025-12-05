@@ -16,6 +16,11 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 dotenv.config();
 
+
+// Determine environment
+const isProduction = process.env.NODE_ENV?.trim() === "production";
+console.log("Running in", process.env.NODE_ENV);
+
 const app = express();
 
 const config = {
@@ -26,7 +31,7 @@ const config = {
   clientID: process.env.CLIENT_ID,
   issuerBaseURL: process.env.ISSUER_BASE_URL,
   routes: {
-    postLogoutRedirect: process.env.CLIENT_URL || 'http://localhost:3000',
+    postLogoutRedirect: process.env.CLIENT_URL ,
     callback: "/callback",
     logout: "/logout",
     login: "/login",
@@ -34,13 +39,9 @@ const config = {
 
   session: {
     absoluteDuration: 30 * 24 * 60 * 60 * 1000, // 30 days
-    store: MongoStore.create({
-      mongoUrl: process.env.MONGO_URI,
-      ttl: 30 * 24 * 60 * 60, // 30 days
-    }),
     cookie: {
-      secure: true,
-      sameSite: "Lax",
+      secure: isProduction, 
+      sameSite: isProduction ? "None" : "Lax", 
     },
   },
 };
@@ -58,7 +59,7 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
+app.use(auth(config));
 // Define fetch-external route before auth middleware
 app.get('/api/v1/jobs/fetch-external', fetchExternalJobs);
 
@@ -107,21 +108,10 @@ const ensureUserInDB = asyncHandler(async (user) => {
 });
 
 app.get("/", async (req, res) => {
-  console.log('Root route hit');
-  console.log('CLIENT_URL:', process.env.CLIENT_URL);
-  console.log('Is authenticated:', req.oidc.isAuthenticated());
-
   if (req.oidc.isAuthenticated()) {
-    console.log('User authenticated:', req.oidc.user.sub);
-    // check if Auth0 user exists in the db
     await ensureUserInDB(req.oidc.user);
-
-    // redirect to the frontend
-    const redirectUrl = process.env.CLIENT_URL || 'http://localhost:3000';
-    console.log('Redirecting to:', redirectUrl);
-    return res.redirect(redirectUrl);
+    return res.redirect(process.env.CLIENT_URL);
   } else {
-    console.log('User not authenticated');
     return res.send("Logged out");
   }
 });
