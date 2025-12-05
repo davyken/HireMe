@@ -113,7 +113,7 @@ const JobEditForm: React.FC<JobEditFormProps> = ({ job, onCancel, onUpdate }) =>
           name="companyDescription"
           value={formData.companyDescription}
           onChange={handleChange}
-          rows={5}
+          rows={3}
           className="w-full p-2 border rounded"
         />
       </label>

@@ -21,7 +21,7 @@ function page() {
   // Redirect to login if not authenticated
   useEffect(() => {
     if (!loading && !isAuthenticated) {
-      router.push("https://hireme-yu0h.onrender.com/login");
+      router.push("http://localhost:8000/login");
     }
   }, [isAuthenticated]);
 
@@ -37,7 +37,7 @@ function page() {
     <div>
       <Header />
 
-      <div className="mt-8 w-[90%] sm:w-full mx-auto flex flex-col px-2">
+      <div className="mt-20 w-[90%] sm:w-full mx-auto flex flex-col px-2">
         <div className="self-center flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-4">
           <button
             className={`border border-gray-400 px-4 sm:px-8 py-2 rounded-full font-medium

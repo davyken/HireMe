@@ -29,10 +29,10 @@ function MyJob({ job }: JobProps) {
   };
 
   useEffect(() => {
-    if (isAuthenticated && job.createdBy._id) {
+    if (isAuthenticated && job.createdBy?._id) {
       getUserProfile(job.createdBy._id);
     }
-  }, [isAuthenticated, job.createdBy._id]);
+  }, [isAuthenticated, job.createdBy?._id]);
 
   useEffect(() => {
     if (userProfile?._id) {
@@ -49,7 +49,7 @@ function MyJob({ job }: JobProps) {
           >
             <Image
               alt={`logo`}
-              src={job.createdBy.profilePicture || "/user.png"}
+              src={job.createdBy?.profilePicture || "/user.png"}
               width={48}
               height={48}
               className="rounded-full shadow-sm flex-shrink-0"
@@ -60,7 +60,7 @@ function MyJob({ job }: JobProps) {
                 {job.title}
               </CardTitle>
               <p className="text-xs sm:text-sm text-muted-foreground truncate">
-                {job.createdBy.name}
+                {job.createdBy?.name || 'External Source'}
               </p>
             </div>
           </div>
@@ -71,7 +71,7 @@ function MyJob({ job }: JobProps) {
             onClick={() => {
               isAuthenticated
                 ? handleLike(job._id)
-                : router.push("https://hireme-yu0h.onrender.com/login");
+                : router.push("http://localhost:8000/login");
             }}
           >
             {isLiked ? bookmark : bookmarkEmpty}
@@ -100,7 +100,7 @@ function MyJob({ job }: JobProps) {
                 ))}
               </div>
             </div>
-            {job.createdBy._id === userProfile?._id && (
+            {job.createdBy?._id === userProfile?._id && (
               <div className="self-end flex space-x-2">
                 <Button variant="ghost" size="icon" className="text-gray-500" onClick={() => router.push(`/job/${job._id}?edit=true`)}>
                   <Pencil size={14} />

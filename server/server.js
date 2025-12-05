@@ -8,6 +8,10 @@ import asyncHandler from "express-async-handler";
 import fs from "fs";
 import User from "./models/UserModel.js";
 import { log } from "console";
+import cron from "node-cron";
+import axios from "axios";
+import Job from "./models/JobModel.js";
+import { fetchExternalJobs } from "./controllers/jobController.js";
 dotenv.config();
 
 const app = express();
@@ -29,9 +33,9 @@ const config = {
   session: {
     absoluteDuration: 30 * 24 * 60 * 60 * 1000, // 30 days
     cookie: {
-      domain: "hireme-yu0h.onrender.com",
-      secure: true,
-      sameSite: "None",
+      // domain: "http://localhost:3000",
+      secure: false,
+      sameSite: "Lax",
     },
   },
 };
@@ -49,6 +53,9 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+// Define fetch-external route before auth middleware
+app.get('/api/v1/jobs/fetch-external', fetchExternalJobs);
 
 app.use(auth(config));
 
@@ -102,6 +109,62 @@ routeFiles.forEach((file) => {
     .catch((error) => {
       console.log("Error importing route", error);
     });
+});
+
+// Schedule job to fetch external jobs every hour
+cron.schedule('0 * * * *', async () => {
+  console.log('Running scheduled job to fetch external jobs...');
+  try {
+    const options = {
+      method: 'GET',
+      url: 'https://jsearch.p.rapidapi.com/search',
+      params: {
+        query: 'developer jobs',
+        page: '1',
+        num_pages: '1'
+      },
+      headers: {
+        'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
+        'X-RapidAPI-Host': 'jsearch.p.rapidapi.com'
+      }
+    };
+
+    const response = await axios.request(options);
+    const externalJobs = response.data.data;
+
+    // Map external jobs to our schema
+    const jobsToSave = externalJobs.map(job => ({
+      title: job.job_title,
+      description: job.job_description,
+      location: job.job_city + ', ' + job.job_state + ', ' + job.job_country,
+      salary: job.job_min_salary || 50000,
+      salaryType: 'Year',
+      negotiable: false,
+      jobType: [job.job_employment_type || 'Full-time'],
+      tags: job.job_required_skills || [],
+      skills: job.job_required_skills || [],
+      companyDescription: job.employer_website || '',
+      source: 'jsearch',
+      createdBy: null,
+    }));
+
+    // Save jobs to DB, avoid duplicates
+    for (const jobData of jobsToSave) {
+      const existingJob = await Job.findOne({
+        title: jobData.title,
+        location: jobData.location,
+        source: 'jsearch'
+      });
+      if (!existingJob) {
+        const job = new Job(jobData);
+        await job.save();
+      }
+    }
+
+    console.log('External jobs fetched and saved successfully');
+  } catch (error) {
+    console.log('Error fetching external jobs:', error);
+  }
 });
 
 const server = async () => {

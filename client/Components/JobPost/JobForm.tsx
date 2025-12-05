@@ -11,6 +11,7 @@ function JobForm() {
   const {
     jobTitle,
     jobDescription,
+    companyDescription,
     salaryType,
     activeEmploymentTypes,
     salary,
@@ -70,6 +71,7 @@ function JobForm() {
     createJob({
       title: jobTitle,
       description: jobDescription,
+      companyDescription,
       salaryType,
       jobType: activeEmploymentTypes,
       salary,

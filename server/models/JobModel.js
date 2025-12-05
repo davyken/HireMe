@@ -70,6 +70,11 @@ const JobSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
+
+    source: {
+      type: String,
+      default: "user", // 'user', 'jsearch', 'adzuna', etc.
+    },
   },
   { timestamps: true }
 );

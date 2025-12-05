@@ -11,14 +11,14 @@ function page() {
 
   useEffect(() => {
     if (!loading && !isAuthenticated) {
-      router.push("https://hireme-yu0h.onrender.com/login");
+      router.push("http://localhost:8000/login");
     }
   }, [isAuthenticated]);
   return (
     <div className="flex flex-col">
       <Header />
 
-      <h2 className="flex-1 pt-8 mx-auto w-[95%] sm:w-[90%] text-2xl sm:text-3xl font-bold text-black">
+      <h2 className="flex-1 pt-8 mx-auto w-[95%] sm:w-[90%] text-2xl sm:text-3xl font-bold text-black mt-20">
         Create a Job Post
       </h2>
 

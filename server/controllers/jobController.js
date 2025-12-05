@@ -1,4 +1,5 @@
 import asyncHandler from "express-async-handler";
+import axios from "axios";
 import User from "../models/UserModel.js";
 import Job from "../models/JobModel.js";
 
@@ -23,6 +24,9 @@ export const createJob = asyncHandler(async (req, res) => {
       negotiable,
       companyDescription,
     } = req.body;
+
+    console.log("Received job data:", req.body);
+    console.log("Company description:", companyDescription);
 
     if (!title) {
       return res.status(400).json({ message: "Title is required" });
@@ -310,6 +314,71 @@ export const deleteJob = asyncHandler(async (req, res) => {
     console.log("Error in deleteJob: ", error);
     return res.status(500).json({
       message: "Server Error",
+    });
+  }
+});
+
+// fetch external jobs from JSearch API
+export const fetchExternalJobs = asyncHandler(async (req, res) => {
+  console.log("Fetching external jobs...");
+  try {
+    const options = {
+      method: 'GET',
+      url: 'https://jsearch.p.rapidapi.com/search',
+      params: {
+        query: 'developer jobs',
+        page: '1',
+        num_pages: '1'
+      },
+      headers: {
+        'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
+        'X-RapidAPI-Host': 'jsearch.p.rapidapi.com'
+      }
+    };
+
+    console.log("API Key present:", !!process.env.RAPIDAPI_KEY);
+    const response = await axios.request(options);
+    const externalJobs = response.data.data;
+    console.log("External jobs fetched:", externalJobs.length);
+
+    // Map external jobs to our schema
+    const jobsToSave = externalJobs.map(job => ({
+      title: job.job_title,
+      description: job.job_description,
+      location: job.job_city + ', ' + job.job_state + ', ' + job.job_country,
+      salary: job.job_min_salary || 50000,
+      salaryType: 'Year',
+      negotiable: false,
+      jobType: [job.job_employment_type || 'Full-time'],
+      tags: job.job_required_skills || [],
+      skills: job.job_required_skills || [],
+      companyDescription: job.employer_website || '',
+      source: 'jsearch',
+      createdBy: null,
+    }));
+
+    // Save jobs to DB, avoid duplicates
+    let savedCount = 0;
+    for (const jobData of jobsToSave) {
+      const existingJob = await Job.findOne({
+        title: jobData.title,
+        location: jobData.location,
+        source: 'jsearch'
+      });
+      if (!existingJob) {
+        const job = new Job(jobData);
+        await job.save();
+        savedCount++;
+      }
+    }
+
+    console.log(`Saved ${savedCount} new jobs`);
+    return res.status(200).json({ message: `External jobs fetched and ${savedCount} new jobs saved successfully` });
+  } catch (error) {
+    console.log("Error in fetchExternalJobs: ", error.message);
+    return res.status(500).json({
+      message: "Server Error",
+      error: error.message
     });
   }
 });
