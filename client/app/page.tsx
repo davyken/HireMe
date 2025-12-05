@@ -28,7 +28,7 @@ import Link from "next/link";
 import type { Job } from "@/types/types";
 import { formatDates } from "@/utils/fotmatDates";
 
-axios.defaults.baseURL = "http://localhost:8000";
+axios.defaults.baseURL = "https://hireme-yu0h.onrender.com";
 axios.defaults.withCredentials = true;
 
 export default function Home() {

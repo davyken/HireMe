@@ -11,7 +11,7 @@ function page() {
 
   useEffect(() => {
     if (!loading && !isAuthenticated) {
-      router.push("http://localhost:8000/login");
+      router.push("https://hireme-yu0h.onrender.com/login");
     }
   }, [isAuthenticated]);
   return (

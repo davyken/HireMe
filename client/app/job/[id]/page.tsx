@@ -127,7 +127,7 @@ function page() {
                     onClick={() => {
                       isAuthenticated
                         ? handleLike(jobState._id)
-                        : router.push("http://localhost:8000/login");
+                        : router.push("https://hireme-yu0h.onrender.com/login");
                     }}
                   >
                     {isLiked ? bookmark : bookmarkEmpty}
@@ -207,7 +207,7 @@ function page() {
                   toast.error("You have already applied to this job");
                 }
               } else {
-                router.push("http://localhost:8000/login");
+                router.push("https://hireme-yu0h.onrender.com/login");
               }
             }}
           >
