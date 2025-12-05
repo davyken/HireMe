@@ -59,7 +59,7 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(auth(config));
+
 // Define fetch-external route before auth middleware
 app.get('/api/v1/jobs/fetch-external', fetchExternalJobs);
 
