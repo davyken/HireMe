@@ -39,7 +39,7 @@ const config = {
   session: {
     absoluteDuration: 30 * 24 * 60 * 60 * 1000, // 30 days
     cookie: {
-      domain: "hire-me-mu-pied.vercel.app",
+      domain: "hireme-yu0h.onrender.com",
       secure: true,
       sameSite: "None",
     },
