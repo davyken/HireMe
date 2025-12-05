@@ -98,9 +98,9 @@ const ensureUserInDB = asyncHandler(async (user) => {
 
       await newUser.save();
 
-      console.log("User added to db", user);
+      console.log("New user created in database");
     } else {
-      console.log("User already exists in db", existingUser);
+      console.log("User authenticated successfully");
     }
   } catch (error) {
     console.log("Error checking or adding user to db", error.message);
