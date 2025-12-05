@@ -12,17 +12,15 @@ import cron from "node-cron";
 import axios from "axios";
 import Job from "./models/JobModel.js";
 import { fetchExternalJobs } from "./controllers/jobController.js";
-import session from "express-session";
-import MongoStore from "connect-mongo";
 dotenv.config();
 
+const app = express();
 
 // Determine environment
 const isProduction = process.env.NODE_ENV?.trim() === "production";
 console.log("Running in", process.env.NODE_ENV);
 
-const app = express();
-
+// Auth0 configuration
 const config = {
   authRequired: false,
   auth0Logout: true,
@@ -31,19 +29,18 @@ const config = {
   clientID: process.env.CLIENT_ID,
   issuerBaseURL: process.env.ISSUER_BASE_URL,
   routes: {
-    postLogoutRedirect: process.env.CLIENT_URL ,
+    postLogoutRedirect: process.env.CLIENT_URL,
     callback: "/callback",
     logout: "/logout",
     login: "/login",
   },
-
   session: {
     absoluteDuration: 30 * 24 * 60 * 60 * 1000, // 30 days
     cookie: {
-      secure: isProduction,
-      sameSite: isProduction ? "None" : "Lax",
+      secure: isProduction, // Only secure in production
+      sameSite: isProduction ? "None" : "Lax", // Cross-site support in prod
+      // No domain set for localhost
     },
-    store: new MongoStore({ mongoUrl: process.env.MONGO_URI }),
   },
 };
 
