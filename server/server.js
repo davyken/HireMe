@@ -64,6 +64,21 @@ app.get('/api/v1/jobs/fetch-external', fetchExternalJobs);
 
 app.use(auth(config));
 
+// Explicit callback handler
+app.get('/callback', (req, res) => {
+  console.log('Callback hit, redirecting to client...');
+  res.redirect(process.env.CLIENT_URL);
+});
+
+// Error handling middleware for auth
+app.use((err, req, res, next) => {
+  console.log('Auth error:', err.name, err.message);
+  if (err.name === 'UnauthorizedError' || err.name === 'BadRequestError') {
+    return res.redirect(process.env.CLIENT_URL);
+  }
+  next(err);
+});
+
 // function to check if user exists in the db
 const ensureUserInDB = asyncHandler(async (user) => {
   try {
