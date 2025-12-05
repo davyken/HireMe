@@ -12,6 +12,8 @@ import cron from "node-cron";
 import axios from "axios";
 import Job from "./models/JobModel.js";
 import { fetchExternalJobs } from "./controllers/jobController.js";
+import session from "express-session";
+import MongoStore from "connect-mongo";
 dotenv.config();
 
 const app = express();
@@ -58,6 +60,19 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+// Session middleware
+app.use(session({
+  secret: process.env.SECRET,
+  resave: false,
+  saveUninitialized: false,
+  store: new MongoStore({ mongoUrl: process.env.MONGO_URI }),
+  cookie: {
+    secure: isProduction,
+    sameSite: isProduction ? "None" : "Lax",
+    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+  },
+}));
+
 // Define fetch-external route before auth middleware
 app.get('/api/v1/jobs/fetch-external', fetchExternalJobs);
 
@@ -97,8 +112,6 @@ const ensureUserInDB = asyncHandler(async (user) => {
       await newUser.save();
 
       console.log("New user created in database");
-    } else {
-      console.log("User authenticated successfully");
     }
   } catch (error) {
     console.log("Error checking or adding user to db", error.message);
