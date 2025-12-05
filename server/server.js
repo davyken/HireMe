@@ -26,7 +26,7 @@ const config = {
   clientID: process.env.CLIENT_ID,
   issuerBaseURL: process.env.ISSUER_BASE_URL,
   routes: {
-    postLogoutRedirect: process.env.CLIENT_URL,
+    postLogoutRedirect: process.env.CLIENT_URL || 'http://localhost:3000',
     callback: "/callback",
     logout: "/logout",
     login: "/login",
@@ -64,17 +64,11 @@ app.get('/api/v1/jobs/fetch-external', fetchExternalJobs);
 
 app.use(auth(config));
 
-// Explicit callback handler
-app.get('/callback', (req, res) => {
-  console.log('Callback hit, redirecting to client...');
-  res.redirect(process.env.CLIENT_URL);
-});
-
 // Error handling middleware for auth
 app.use((err, req, res, next) => {
   console.log('Auth error:', err.name, err.message);
   if (err.name === 'UnauthorizedError' || err.name === 'BadRequestError') {
-    return res.redirect(process.env.CLIENT_URL);
+    return res.redirect(process.env.CLIENT_URL || 'http://localhost:3000');
   }
   next(err);
 });
