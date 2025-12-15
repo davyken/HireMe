@@ -22,8 +22,11 @@ function Profile() {
   const router = useRouter();
   return (
     <DropdownMenu>
+
       <div className="flex items-center gap-4">
-        <Badge>{profession}</Badge>
+        {profession && profession !== "Unemployed" && profession.trim() !== "" && (
+          <Badge>{profession}</Badge>
+        )}
         <DropdownMenuTrigger asChild className="cursor-pointer">
           <Image
             src={profilePicture ? profilePicture : "/user.png"}

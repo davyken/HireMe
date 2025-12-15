@@ -134,13 +134,26 @@ export default function Home() {
       Connect with thousands of employers and job seekers on our platform. Powerful search, real results.
     </p>
 
+
     <div className="max-w-full sm:max-w-2xl mx-auto flex flex-col sm:flex-row gap-4 px-2">
       <Input
         type="text"
         placeholder="Search by title, keyword or company"
         className="flex-grow bg-white text-black rounded-full shadow-lg focus:ring-2 focus:ring-[#7263f3]"
+        id="home-search"
       />
-      <Button className="bg-gradient-to-r from-[#7263f3] to-[#9b8af9] text-white w-full sm:w-auto rounded-full hover:opacity-90 transition">
+      <Button 
+        className="bg-gradient-to-r from-[#7263f3] to-[#9b8af9] text-white w-full sm:w-auto rounded-full hover:opacity-90 transition"
+        onClick={() => {
+          const searchInput = document.getElementById('home-search') as HTMLInputElement;
+          const searchTerm = searchInput?.value?.trim();
+          if (searchTerm) {
+            window.location.href = `/findwork?search=${encodeURIComponent(searchTerm)}`;
+          } else {
+            window.location.href = '/findwork';
+          }
+        }}
+      >
         <SearchIcon className="w-6 h-6" />
         <span className="ml-2">Search Jobs</span>
       </Button>
@@ -240,9 +253,10 @@ export default function Home() {
                   className="group relative flex flex-col h-full rounded-2xl shadow-lg hover:shadow-2xl transition-transform duration-300 hover:-translate-y-1 animate-fadeIn"
                   style={{ animationDelay: `${idx * 100}ms` }}
                 >
+
                   {/* Featured ribbon example */}
                   {idx < 3 && (
-                    <div className="absolute top-4 left-4 bg-[#fde68a] text-[#92400e] text-xs px-3 py-1 rounded-full flex items-center gap-1 shadow">
+                    <div className="absolute top-2 right-2 bg-[#fde68a] text-[#92400e] text-xs px-3 py-1 rounded-full flex items-center gap-1 shadow z-10">
                       <Star className="w-3 h-3" /> Featured
                     </div>
                   )}
